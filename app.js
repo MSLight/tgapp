@@ -255,7 +255,6 @@
         } catch (e) {}
         return null;
     }
-
     if (!window.Telegram) {
         window.Telegram = {};
     }
@@ -268,7 +267,6 @@
         receiveEvent: receiveEvent,
         callEventCallbacks: callEventCallbacks
     };
-
     window.Telegram.Utils = {
         urlSafeDecode: urlSafeDecode,
         urlParseQueryString: urlParseQueryString,
@@ -277,23 +275,16 @@
         sessionStorageSet: sessionStorageSet,
         sessionStorageGet: sessionStorageGet
     };
-
-    // For Windows Phone app
     window.TelegramGameProxy_receiveEvent = receiveEvent;
-
-    // App backward compatibility
     window.TelegramGameProxy = {
         receiveEvent: receiveEvent
     };
 })();
-
-// WebApp
 (function () {
     var Utils = window.Telegram.Utils;
     var WebView = window.Telegram.WebView;
     var initParams = WebView.initParams;
     var isIframe = WebView.isIframe;
-
     var WebApp = {};
     var webAppInitData = '',
     webAppInitDataUnsafe = {};
@@ -301,15 +292,13 @@
     colorScheme = 'light';
     var webAppVersion = '6.0';
     var webAppPlatform = 'unknown';
-
     if (initParams.tgWebAppData && initParams.tgWebAppData.length) {
         webAppInitData = initParams.tgWebAppData;
         webAppInitDataUnsafe = Utils.urlParseQueryString(webAppInitData);
         for (var key in webAppInitDataUnsafe) {
             var val = webAppInitDataUnsafe[key];
             try {
-                if (val.substr(0, 1) == '{' && val.substr(-1) == '}' ||
-                    val.substr(0, 1) == '[' && val.substr(-1) == ']') {
+                if (val.substr(0, 1) == '{' && val.substr(-1) == '}' || val.substr(0, 1) == '[' && val.substr(-1) == ']') {
                     webAppInitDataUnsafe[key] = JSON.parse(val);
                 }
             } catch (e) {}
@@ -334,7 +323,6 @@
     if (initParams.tgWebAppPlatform) {
         webAppPlatform = initParams.tgWebAppPlatform;
     }
-
     function onThemeChanged(eventType, eventData) {
         if (eventData.theme_params) {
             setThemeParams(eventData.theme_params);
@@ -368,10 +356,7 @@
         while (el.tagName != 'A' && el.parentNode) {
             el = el.parentNode;
         }
-        if (el.tagName == 'A' &&
-            el.target != '_blank' &&
-            (el.protocol == 'http:' || el.protocol == 'https:') &&
-            el.hostname == 't.me') {
+        if (el.tagName == 'A' && el.target != '_blank' && (el.protocol == 'http:' || el.protocol == 'https:') && el.hostname == 't.me') {
             WebApp.openTgLink(el.href);
             e.preventDefault();
         }
@@ -405,9 +390,7 @@
     }
 
     function setThemeParams(theme_params) {
-        // temp iOS fix
-        if (theme_params.bg_color == '#1c1c1d' &&
-            theme_params.bg_color == theme_params.secondary_bg_color) {
+        if (theme_params.bg_color == '#1c1c1d' && theme_params.bg_color == theme_params.secondary_bg_color) {
             theme_params.secondary_bg_color = '#2c2c2e';
         }
         var color;
@@ -501,11 +484,9 @@
             return;
         }
         if (!versionAtLeast('6.9')) {
-            if (themeParams.bg_color &&
-                themeParams.bg_color == color) {
+            if (themeParams.bg_color && themeParams.bg_color == color) {
                 color = 'bg_color';
-            } else if (themeParams.secondary_bg_color &&
-                themeParams.secondary_bg_color == color) {
+            } else if (themeParams.secondary_bg_color && themeParams.secondary_bg_color == color) {
                 color = 'secondary_bg_color';
             }
         }
@@ -520,9 +501,7 @@
                 throw Error('WebAppHeaderColorInvalid');
             }
         }
-        if (!versionAtLeast('6.9') &&
-            color_key != 'bg_color' &&
-            color_key != 'secondary_bg_color') {
+        if (!versionAtLeast('6.9') && color_key != 'bg_color' && color_key != 'secondary_bg_color') {
             console.error('[Telegram.WebApp] Header color key should be one of Telegram.WebApp.themeParams.bg_color, Telegram.WebApp.themeParams.secondary_bg_color, \'bg_color\', \'secondary_bg_color\'', color);
             throw Error('WebAppHeaderColorKeyInvalid');
         }
@@ -533,8 +512,7 @@
     var appHeaderColorKey = null,
     appHeaderColor = null;
     function updateHeaderColor() {
-        if (appHeaderColorKey != headerColorKey ||
-            appHeaderColor != headerColor) {
+        if (appHeaderColorKey != headerColorKey || appHeaderColor != headerColor) {
             appHeaderColorKey = headerColorKey;
             appHeaderColor = headerColor;
             if (appHeaderColor) {
@@ -941,8 +919,7 @@
                 buttonText = text;
             }
             if (typeof params.color !== 'undefined') {
-                if (params.color === false ||
-                    params.color === null) {
+                if (params.color === false || params.color === null) {
                     buttonColor = false;
                 } else {
                     var color = parseColorToHex(params.color);
@@ -954,8 +931,7 @@
                 }
             }
             if (typeof params.text_color !== 'undefined') {
-                if (params.text_color === false ||
-                    params.text_color === null) {
+                if (params.text_color === false || params.text_color === null) {
                     buttonTextColor = false;
                 } else {
                     var text_color = parseColorToHex(params.text_color);
@@ -967,8 +943,7 @@
                 }
             }
             if (typeof params.is_visible !== 'undefined') {
-                if (params.is_visible &&
-                    !mainButton.text.length) {
+                if (params.is_visible && !mainButton.text.length) {
                     console.error('[Telegram.WebApp] Main button text is required');
                     throw Error('WebAppMainButtonParamInvalid');
                 }
@@ -1132,24 +1107,17 @@
                 return hapticFeedback;
             }
             if (params.type == 'impact') {
-                if (params.impact_style != 'light' &&
-                    params.impact_style != 'medium' &&
-                    params.impact_style != 'heavy' &&
-                    params.impact_style != 'rigid' &&
-                    params.impact_style != 'soft') {
+                if (params.impact_style != 'light' && params.impact_style != 'medium' && params.impact_style != 'heavy' && params.impact_style != 'rigid' && params.impact_style != 'soft') {
                     console.error('[Telegram.WebApp] Haptic impact style is invalid', params.impact_style);
                     throw Error('WebAppHapticImpactStyleInvalid');
                 }
             } else if (params.type == 'notification') {
-                if (params.notification_type != 'error' &&
-                    params.notification_type != 'success' &&
-                    params.notification_type != 'warning') {
+                if (params.notification_type != 'error' && params.notification_type != 'success' && params.notification_type != 'warning') {
                     console.error('[Telegram.WebApp] Haptic notification type is invalid', params.notification_type);
                     throw Error('WebAppHapticNotificationTypeInvalid');
                 }
-            } else if (params.type == 'selection_change') {
-                // no params needed
-            } else {
+            } else if (params.type == 'selection_change') {} 
+			else {
                 console.error('[Telegram.WebApp] Haptic feedback type is invalid', params.type);
                 throw Error('WebAppHapticFeedbackTypeInvalid');
             }
@@ -1345,8 +1313,7 @@
         }
         function onBiometryTokenUpdated(eventType, eventData) {
             var applied = false;
-            if (isBiometricAvailable &&
-                isAccessRequested) {
+            if (isBiometricAvailable && isAccessRequested) {
                 if (eventData.status == 'updated') {
                     isBiometricTokenSaved = true;
                     applied = true;
@@ -1642,8 +1609,7 @@
                         for (var key in webViewEvent.responseUnsafe) {
                             var val = webViewEvent.responseUnsafe[key];
                             try {
-                                if (val.substr(0, 1) == '{' && val.substr(-1) == '}' ||
-                                    val.substr(0, 1) == '[' && val.substr(-1) == ']') {
+                                if (val.substr(0, 1) == '{' && val.substr(-1) == '}' || val.substr(0, 1) == '[' && val.substr(-1) == ']') {
                                     webViewEvent.responseUnsafe[key] = JSON.parse(val);
                                 }
                             } catch (e) {}
@@ -1887,8 +1853,7 @@
     WebApp.openLink = function (url, options) {
         var a = document.createElement('A');
         a.href = url;
-        if (a.protocol != 'http:' &&
-            a.protocol != 'https:') {
+        if (a.protocol != 'http:' && a.protocol != 'https:') {
             console.error('[Telegram.WebApp] Url protocol is not supported', url);
             throw Error('WebAppTgUrlInvalid');
         }
@@ -1906,8 +1871,7 @@
     WebApp.openTelegramLink = function (url) {
         var a = document.createElement('A');
         a.href = url;
-        if (a.protocol != 'http:' &&
-            a.protocol != 'https:') {
+        if (a.protocol != 'http:' && a.protocol != 'https:') {
             console.error('[Telegram.WebApp] Url protocol is not supported', url);
             throw Error('WebAppTgUrlInvalid');
         }
@@ -1929,11 +1893,7 @@
         match,
         slug;
         a.href = url;
-        if (a.protocol != 'http:' &&
-            a.protocol != 'https:' ||
-            a.hostname != 't.me' ||
-            !(match = a.pathname.match(/^\/(\$|invoice\/)([A-Za-z0-9\-_=]+)$/)) ||
-            !(slug = match[2])) {
+        if (a.protocol != 'http:' && a.protocol != 'https:' || a.hostname != 't.me' || !(match = a.pathname.match(/^\/(\$|invoice\/)([A-Za-z0-9\-_=]+)$/)) || !(slug = match[2])) {
             console.error('[Telegram.WebApp] Invoice url is invalid', url);
             throw Error('WebAppInvoiceUrlInvalid');
         }
@@ -2011,12 +1971,8 @@
                     button_type = 'default';
                 }
                 btn.type = button_type;
-                if (button_type == 'ok' ||
-                    button_type == 'close' ||
-                    button_type == 'cancel') {
-                    // no params needed
-                } else if (button_type == 'default' ||
-                    button_type == 'destructive') {
+                if (button_type == 'ok' || button_type == 'close' || button_type == 'cancel') {} 
+				else if (button_type == 'default' || button_type == 'destructive') {
                     var text = '';
                     if (typeof button.text !== 'undefined') {
                         text = strTrim(button.text);
